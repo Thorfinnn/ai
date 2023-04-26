@@ -1,0 +1,83 @@
+#include <iostream>
+
+#include <vector>
+
+#include <cmath>
+
+using namespace std;
+
+class Node {
+
+public:
+
+    vector<double> values;
+
+};
+
+class VariableNode : public Node {
+
+public:
+
+    int numValues;
+
+};
+
+class CPT {
+
+public:
+
+    vector<double> probabilities;
+
+};
+
+class BayesianNetwork {
+
+public:
+
+    VariableNode A, B;
+
+    CPT cptA, cptB;
+
+    double query(int a, int b) {
+
+        double result = 0.0;
+
+        for (int i = 0; i < A.numValues; i++) {
+
+            for (int j = 0; j < B.numValues; j++) {
+
+                result += cptA.probabilities[i] * cptB.probabilities[j] * (a == i) * (b == j);
+
+            }
+
+        }
+
+        return result;
+
+    }
+
+};
+
+int main() {
+
+    BayesianNetwork net;
+
+    net.A.numValues = 2;
+
+    net.B.numValues = 2;
+
+    net.A.values = {0.3, 0.7};
+
+    net.B.values = {0.6, 0.4};
+
+    net.cptA.probabilities = {0.7, 0.3};
+
+    net.cptB.probabilities = {0.4, 0.6};
+
+    double q = net.query(0, 1);
+
+    cout << "P(A=0, B=1) = " << q << endl;
+
+    return 0;
+
+}
